@@ -1,0 +1,26 @@
+{
+  "name": "starwars-api",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "git@github.com:williamolojede/starwars-api.git",
+  "author": "William I. Olojede <ilerioluwase97@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/server.js",
+    "start:dev": "babel-watch src/server.js",
+    "prebuild": "rimraf dist",
+    "build": "babel src -d dist --source-maps --ignore ./node_modules"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "express": "^4.17.1",
+    "express-winston": "^3.3.0",
+    "rimraf": "^3.0.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-watch": "^7.0.0"
+  }
+}
