@@ -21,7 +21,6 @@ app.use((_, __, next) => {
 
 // error handler
 // define as the last app.use callback
-/* eslint no-unused-vars: 0 */
 app.use(
   ({ message, statusCode = 500, stack }, _, res, __) => {
     if (statusCode === 500) logger.info(stack);
