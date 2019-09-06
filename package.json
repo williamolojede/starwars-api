@@ -25,6 +25,7 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "express-winston": "^3.3.0",
+    "lodash.orderby": "^4.6.0",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "request-ip": "^2.1.3",

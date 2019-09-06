@@ -1,4 +1,5 @@
 import axios from 'axios';
+import orderBy from 'lodash.orderby';
 
 import models from '../models';
 
@@ -53,6 +54,43 @@ export const getComments = async (req) => {
   return {
     payload: {
       data: comments,
+    },
+    statusCode: 200,
+  }
+}
+
+export const getCharacters = async (req) => {
+  const { sort, order, filter } = req.query;
+  const { episodeId } = req.params;
+
+  let data;
+  const { data: { characters } } = await axios
+    .get(`https://swapi.co/api/films/${episodeId}`);
+  data = (await Promise.all(
+    characters
+      .map(async (characterUrl) => await axios.get(characterUrl))
+  )).map(({ data }) => data);
+
+  if (sort) {
+    data = orderBy(data, [sort], [order ? order : 'asc']);
+  }
+
+  if (filter) {
+    data = data.filter(({ gender }) => gender === filter);
+  }
+
+  const totalHeight = data
+    .reduce((acc, cur) =>  acc + Number(cur.height), 0);
+
+  return {
+    payload: {
+      data,
+      meta: {
+        count: data.length,
+        totalHeight: {
+          cm: totalHeight,
+        },
+      },
     },
     statusCode: 200,
   }

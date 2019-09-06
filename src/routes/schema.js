@@ -14,3 +14,14 @@ export const getCommentsSchema = {
     episodeId: Joi.number().min(1).max(7).required(),
   },
 }
+
+export const getCharactersSchema = {
+  params: {
+    episodeId: Joi.number().min(1).max(7).required(),
+  },
+  query: {
+    sort: Joi.string().valid(['name', 'gender', 'height']),
+    order: Joi.string().valid(['asc', 'desc']),
+    filter: Joi.string().valid(['male', 'female', 'hermaphrodite']),
+  },
+}

@@ -1,9 +1,18 @@
 import express from 'express';
 import requestIp from 'request-ip';
 
-import { getMovies, addComment, getComments } from '../controllers';
+import { 
+  getMovies, 
+  addComment, 
+  getComments,
+  getCharacters,
+} from '../controllers';
 import { asyncWrapMiddleware, validateRequest } from '../middlewares';
-import { addCommentSchema, getCommentsSchema } from './schema';
+import { 
+  addCommentSchema, 
+  getCommentsSchema,
+  getCharactersSchema,
+} from './schema';
 
 const moviesRouter = express.Router();
 
@@ -19,6 +28,12 @@ moviesRouter.post(
   requestIp.mw(),
   validateRequest(addCommentSchema),
   asyncWrapMiddleware(addComment)
+);
+
+moviesRouter.get(
+  '/:episodeId/characters', 
+  validateRequest(getCharactersSchema),
+  asyncWrapMiddleware(getCharacters)
 );
 
 export default moviesRouter;
