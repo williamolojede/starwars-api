@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyPaser from 'body-parser';
 
 import logger, { httpLogger } from './config/logger';
 import router from './routes';
@@ -8,6 +9,8 @@ const app = express();
 const { PORT = 4200 } = process.env;
 
 app.use(httpLogger);
+app.use(bodyPaser.json());
+app.use(bodyPaser.urlencoded({ extended: false }));
 
 // API ROUTES
 app.use('/api', router);

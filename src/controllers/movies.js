@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+import models from '../models';
+
+const { Comment } = models;
+
 export const getMovies = async () => {
   const { data: { results } } = await axios.get('https://swapi.co/api/films');
 
@@ -16,3 +20,24 @@ export const getMovies = async () => {
     statusCode: 200,
   }
 };
+
+export const addComment = async (req) => {
+  const { clientIp: ipAddress } = req;
+  // TODO: check if episodeId exists,
+  const { episodeId } = req.params;
+  const { comment } = req.body;
+
+  const newComment = await Comment.create({
+    episodeId,
+    comment,
+    ipAddress,
+  });
+
+  return {
+    payload: {
+      message: 'Your comment has been saved',
+      data: newComment,
+    },
+    statusCode: 201,
+  }
+}
