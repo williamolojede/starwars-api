@@ -23,7 +23,6 @@ export const getMovies = async () => {
 
 export const addComment = async (req) => {
   const { clientIp: ipAddress } = req;
-  // TODO: check if episodeId exists,
   const { episodeId } = req.params;
   const { comment } = req.body;
 
@@ -39,5 +38,22 @@ export const addComment = async (req) => {
       data: newComment,
     },
     statusCode: 201,
+  }
+}
+
+export const getComments = async (req) => {
+  const { episodeId } = req.params;
+  const comments = await Comment.findAll({ 
+    where: {
+      episodeId,
+    },
+    order: [['createdAt', 'DESC']]
+  });
+
+  return {
+    payload: {
+      data: comments,
+    },
+    statusCode: 200,
   }
 }
