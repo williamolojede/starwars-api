@@ -7,16 +7,27 @@ const { Comment } = models;
 
 export const getMovies = async () => {
   const { data: { results } } = await axios.get('https://swapi.co/api/films');
+  const episodeIds = results.map(({ episode_id }) => episode_id);
+  
+  const commentsCountGroup = await Comment.count({ 
+    where: { episodeId: episodeIds },
+    group: ['episodeId'],
+  });
 
   return {
     payload: {
       data: results
         .sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
-        .map(({ title, opening_crawl }) => ({ 
-          name: title, 
-          opening_crawl,
-          comment_counts: 0,
-        })),
+        .map(({ title, opening_crawl, episode_id }) => {
+          const commentsCount = commentsCountGroup
+            .find(({ episodeId }) => episodeId === episode_id) 
+
+          return ({ 
+            name: title, 
+            openingCrawl: opening_crawl,
+            commentCounts:  commentsCount ? Number(commentsCount.count) : 0,
+         })
+      }),
     },
     statusCode: 200,
   }
