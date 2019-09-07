@@ -92,6 +92,7 @@ export const getCharacters = async (req) => {
 
   const totalHeight = data
     .reduce((acc, cur) =>  acc + Number(cur.height), 0);
+  const totalHeightToFoot = totalHeight / (12 * 2.54);
 
   return {
     payload: {
@@ -99,7 +100,8 @@ export const getCharacters = async (req) => {
       meta: {
         count: data.length,
         totalHeight: {
-          cm: totalHeight,
+          cm: `${totalHeight}cm`,
+          'ft_in': `${Math.floor(totalHeightToFoot)}ft and ${((totalHeightToFoot % 1) * 12).toFixed(2)}inches`,
         },
       },
     },
