@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "start:dev": "babel-watch src/server.js",
+    "test": "jest",
     "prebuild": "rimraf dist",
     "build": "babel src -d dist --source-maps --ignore ./node_modules",
     "db:migrate": "sequelize db:migrate",
@@ -25,6 +26,7 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "express-winston": "^3.3.0",
+    "jest": "^24.9.0",
     "lodash.orderby": "^4.6.0",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
@@ -32,6 +34,7 @@
     "rimraf": "^3.0.0",
     "sequelize": "^5.18.1",
     "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {
