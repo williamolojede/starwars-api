@@ -18,13 +18,15 @@ export const getMovies = async () => {
     payload: {
       data: results
         .sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
-        .map(({ title, opening_crawl, episode_id }) => {
+        .map(({ title, opening_crawl, episode_id, release_date }) => {
           const commentsCount = commentsCountGroup
             .find(({ episodeId }) => episodeId === episode_id) 
 
           return ({ 
             name: title, 
             openingCrawl: opening_crawl,
+            episodeId: episode_id,
+            releaseDate: release_date,
             commentCounts:  commentsCount ? Number(commentsCount.count) : 0,
          })
       }),
