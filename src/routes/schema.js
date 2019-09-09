@@ -22,6 +22,8 @@ export const getCharactersSchema = {
   query: {
     sort: Joi.string().valid(['name', 'gender', 'height']),
     order: Joi.string().valid(['asc', 'desc']),
-    filter: Joi.string().valid(['male', 'female', 'hermaphrodite']),
+    filter: Joi.string().valid([
+      'male', 'female', 'hermaphrodite', 'unknown', 'n/a'
+    ]),
   },
 }
