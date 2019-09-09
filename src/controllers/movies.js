@@ -1,13 +1,16 @@
-import axios from 'axios';
 import orderBy from 'lodash.orderby';
 
 import models from '../models';
+import { 
+  SwapiService,
+  calculateCharactersTotalHeight,
+} from '../utils';
 
 const { Comment } = models;
 
 export const getMovies = async () => {
-  const { data: { results } } = await axios.get('https://swapi.co/api/films');
-  const episodeIds = results.map(({ episode_id }) => episode_id);
+  const movies = await SwapiService.getMovies();
+  const episodeIds = movies.map(({ episode_id }) => episode_id);
   
   const commentsCountGroup = await Comment.count({ 
     where: { episodeId: episodeIds },
@@ -16,7 +19,7 @@ export const getMovies = async () => {
 
   return {
     payload: {
-      data: results
+      data: movies
         .sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
         .map(({ title, opening_crawl, episode_id, release_date }) => {
           const commentsCount = commentsCountGroup
@@ -76,35 +79,22 @@ export const getCharacters = async (req) => {
   const { sort, order, filter } = req.query;
   const { episodeId } = req.params;
 
-  let data;
-  const { data: { characters } } = await axios
-    .get(`https://swapi.co/api/films/${episodeId}`);
-  data = (await Promise.all(
-    characters
-      .map(async (characterUrl) => await axios.get(characterUrl))
-  )).map(({ data }) => data);
+  const characters = await SwapiService.getEpisodeCharacters(episodeId)
 
   if (sort) {
-    data = orderBy(data, [sort], [order ? order : 'asc']);
+    characters = orderBy(data, [sort], [order ? order : 'asc']);
   }
 
   if (filter) {
-    data = data.filter(({ gender }) => gender === filter);
+    characters = data.filter(({ gender }) => gender === filter);
   }
-
-  const totalHeight = data
-    .reduce((acc, cur) =>  acc + Number(cur.height), 0);
-  const totalHeightToFoot = totalHeight / (12 * 2.54);
 
   return {
     payload: {
-      data,
+      data: characters,
       meta: {
-        count: data.length,
-        totalHeight: {
-          cm: `${totalHeight}cm`,
-          'ft_in': `${Math.floor(totalHeightToFoot)}ft and ${((totalHeightToFoot % 1) * 12).toFixed(2)}inches`,
-        },
+        count: characters.length,
+        totalHeight: calculateCharactersTotalHeight(characters),
       },
     },
     statusCode: 200,
