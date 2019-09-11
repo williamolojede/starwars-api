@@ -1,5 +1,5 @@
 import models from '../models';
-import { SwapiService, formatMovie } from '../utils';
+import { SwapiService, DataTransformer } from '../utils';
 
 const { Comment } = models;
 
@@ -13,7 +13,7 @@ export const getMovies = async () => {
     group: ['episodeId'],
   });
 
-  movies = movies.map(formatMovie(commentsCountGroup));
+  movies = movies.map(DataTransformer.formatMovie(commentsCountGroup));
 
   return {
     payload: {
