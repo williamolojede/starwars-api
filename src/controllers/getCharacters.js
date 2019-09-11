@@ -9,14 +9,14 @@ export const getCharacters = async (req) => {
   const { sort, order, filter } = req.query;
   const { episodeId } = req.params;
 
-  const characters = await SwapiService.getEpisodeCharacters(episodeId)
+  let characters = await SwapiService.getEpisodeCharacters(episodeId)
 
   if (sort) {
-    characters = orderBy(data, [sort], [order ? order : 'asc']);
+    characters = orderBy(characters, [sort], [order ? order : 'asc']);
   }
 
   if (filter) {
-    characters = data.filter(({ gender }) => gender === filter);
+    characters = characters.filter(({ gender }) => gender === filter);
   }
 
   return {
