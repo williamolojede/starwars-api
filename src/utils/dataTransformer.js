@@ -1,5 +1,5 @@
-export class DataTransformer {
-  static formatMovie(commentsCountGroup) {
+export const DataTransformer = {
+  formatMovie(commentsCountGroup) {
     return ({ 
       title, 
       opening_crawl, 
