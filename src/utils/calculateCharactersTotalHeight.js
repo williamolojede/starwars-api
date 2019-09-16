@@ -1,6 +1,9 @@
 export const calculateCharactersTotalHeight = (characters) => {
-  const totalHeight = characters
-    .reduce((acc, cur) =>  acc + Number(cur.height), 0);
+  const totalHeight = characters.reduce((acc, cur) => {
+    // the height of some charactes are "unknown" so after beign converted
+    // to number(in formatCharacter()) it would be null, so use 0 for those
+    return acc + (cur.height ? cur.height : 0)
+  }, 0);
   const totalHeightToFoot = totalHeight / (12 * 2.54);
 
   return {

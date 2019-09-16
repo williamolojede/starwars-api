@@ -22,4 +22,10 @@ describe('Get Characters', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toMatchSnapshot();
   });
+
+  it('should return a list of characters sorted by height in ascending order', async () => {
+    const response = await request(app).get('/api/movies/1/characters?sort=height&order=asc');
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchSnapshot();
+  });
 });

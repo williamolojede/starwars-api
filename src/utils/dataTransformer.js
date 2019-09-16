@@ -17,5 +17,9 @@ export const DataTransformer = {
         commentsCount:  commentsCount ? Number(commentsCount.count) : 0,
       })
     }
+  },
+  formatCharacter(character) {
+    // some character's height are "unknown", converting to number would give null
+    return { ...character, height: Number(character.height)}
   }
 }

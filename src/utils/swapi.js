@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { DataTransformer } from './dataTransformer';
+
 const SWAPI_FILMS_URL = 'https://swapi.co/api/films';
 
 export const SwapiService = {
@@ -18,6 +20,6 @@ export const SwapiService = {
     const { data: { characters: charactersUrls } } = await axios
       .get(`${SWAPI_FILMS_URL}/${episodeId}`);
     const characters = await SwapiService.getCharacters(charactersUrls);
-    return characters;
+    return characters.map(DataTransformer.formatCharacter);
   }
 }

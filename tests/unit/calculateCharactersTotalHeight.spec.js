@@ -3,9 +3,10 @@ import { calculateCharactersTotalHeight } from '../../src/utils/calculateCharact
 describe('Calculate Characters Total Height', () => {
   it('should return the correct value in cm and ft/inches', () => {
     const characters = [
-      { height: '20' },
-      { height: '15' },
-      { height: '30' },
+      { height: 20 },
+      { height: 15 },
+      { height: 30 },
+      { height: null }, // unkown height
     ]
     const totalHeight = calculateCharactersTotalHeight(characters)
     expect(totalHeight.cm).toBe('65cm');
