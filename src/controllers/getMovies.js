@@ -1,17 +1,16 @@
-import models from '../models';
-import { SwapiService, DataTransformer } from '../utils';
-
-const { Comment } = models;
+import { 
+  SwapiService, 
+  DataTransformer, 
+  getMovieEpisodeIds,
+  getCommentsCountGroup
+} from '../utils';
 
 export const getMovies = async () => {
   let movies = await SwapiService.getMovies();
 
-  const episodeIds = movies.map(({ episode_id }) => episode_id);
+  const episodeIds = getMovieEpisodeIds(movies);
   
-  const commentsCountGroup = await Comment.count({ 
-    where: { episodeId: episodeIds },
-    group: ['episodeId'],
-  });
+  const commentsCountGroup = await getCommentsCountGroup(episodeIds);
 
   movies = movies.map(DataTransformer.formatMovie(commentsCountGroup));
 
